@@ -1,31 +1,29 @@
 pipeline {
     agent any
-
+    triggers {
+        pollSCM 'H/10 * * * *'
+    }
     stages {
-        stage ('Compile Stage') {
-
+        stage('checkout') {
             steps {
-                withMaven(maven : 'maven_3_5_0') {
-                    sh 'mvn clean compile'
-                }
-            }
-        }
-
-        stage ('Testing Stage') {
-
-            steps {
-                withMaven(maven : 'maven_3_5_0') {
-                    sh 'mvn test'
-                }
-            }
-        }
-
-
-        stage ('Deployment Stage') {
-            steps {
-                withMaven(maven : 'maven_3_5_0') {
-                    sh 'mvn deploy'
-                }
+                checkout([
+                    $class: 'SubversionSCM', 
+                    additionalCredentials: [], 
+                    excludedCommitMessages: '', 
+                    excludedRegions: '', 
+                    excludedRevprop: '', 
+                    excludedUsers: '', 
+                    filterChangelog: false, 
+                    ignoreDirPropChanges: false, 
+                    includedRegions: '', 
+                    locations: [[
+                        credentialsId: '9beafea5-e7dc-473a-bc46-f2d3c381fb06', 
+                        depthOption: 'infinity',
+                        ignoreExternalsOption: true, 
+                        local: '.', 
+                        remote: 'http://172.31.0.3/svn/SVNRepository']], 
+                    workspaceUpdater: [$class: 'CheckoutUpdater']
+                ])
             }
         }
     }
