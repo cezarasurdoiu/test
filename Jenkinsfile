@@ -21,7 +21,7 @@ pipeline {
                         depthOption: 'infinity',
                         ignoreExternalsOption: true, 
                         local: '.', 
-                        remote: 'http://172.31.0.3/svn/SVNRepository']], 
+                        remote: 'http://172.31.0.3/svn/repo2']], 
                     workspaceUpdater: [$class: 'CheckoutUpdater']
                 ])
             }
